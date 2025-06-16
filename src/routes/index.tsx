@@ -1,20 +1,28 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { use } from "react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+
+import { IdCard } from "@/components/IdCard";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
 });
 
-async function fetchUsers() {
-  const response = await fetch("/api/users");
-  if (!response.ok) {
-    return new Error("Failed to fetch users");
-  }
-  return response.json();
-}
-
 function RouteComponent() {
-  const users = use(fetchUsers());
-
-  return <div>{users.map((user) => user.name).join(" ")}</div>;
+  return (
+    <div className="min-h-screen grid place-items-center p-4">
+      <IdCard>
+        <ul className="text-center space-y-2">
+          <li>
+            <Link to="/user">
+              I am a <strong>user</strong>
+            </Link>
+          </li>
+          <li>
+            <Link to="/admin">
+              I am an <strong>admin</strong>
+            </Link>
+          </li>
+        </ul>
+      </IdCard>
+    </div>
+  );
 }

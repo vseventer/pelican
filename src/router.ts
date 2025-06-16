@@ -3,6 +3,7 @@ import { routeTree } from "./routeTree.gen";
 
 export function createRouter() {
   const router = createTanStackRouter({
+    notFoundMode: "root",
     routeTree,
     scrollRestoration: true,
   });

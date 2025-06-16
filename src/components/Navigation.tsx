@@ -1,33 +1,67 @@
-import logo from "@/assets/logo.png?url";
+import { use } from "react";
+import { Link } from "@tanstack/react-router";
 
-function IdCard() {
-  return (
-    <div className="flex flex-row bg-orange-50 border border-red-500 border-t-8 p-2 w-[240px]">
-      <img
-        alt="A pelican doctor writing up medical records."
-        className="bg-red-50 border border-red-100 rounded-full"
-        height={64}
-        src={logo}
-        width={64}
-      />
-      <h1 className="p-4 text-3xl font-semibold">Pelican</h1>
-    </div>
-  );
-}
+import { IdCard } from "@/components/IdCard";
+import { H2 } from "@/components/Typography";
+import { fetchPetList } from "@/lib/hooks";
 
 export function Footer() {
-  return <footer>footer</footer>;
+  return (
+    <footer className="p-4 text-center text-gray-300">
+      Pelican is not a real application and Dr. Pelican Ph.D., unfortunately,
+      does not exist either.
+    </footer>
+  );
 }
 
 export function Header() {
   return (
-    <header className="container flex flex-wrap">
+    <header className="container flex flex-wrap my-2">
       <IdCard />
       <hr />
     </header>
   );
 }
 
+function Pet({ data }) {
+  return (
+    <Link to="/pets/$petId" params={{ petId: data.id }}>
+      {data.name}
+    </Link>
+  );
+}
+
+function PetList() {
+  const pets = use(fetchPetList());
+
+  const inner =
+    pets.length > 0 ? (
+      <>
+        <H2>Your Pets</H2>
+        <hr />
+        <ul>
+          {pets.map((pet) => (
+            <li key={pet.id}>
+              <Pet key={pet.id} data={pet} />
+            </li>
+          ))}
+        </ul>
+      </>
+    ) : null;
+
+  return (
+    <div className="space-y-2">
+      {inner}
+      <hr />
+      <Link to="/new">Add a New Pet</Link>
+    </div>
+  );
+}
+
 export function Sidebar() {
-  return <aside></aside>;
+  return (
+    <aside>
+      <PetList />
+    </aside>
+  );
 }
