@@ -8,6 +8,7 @@ import {
 
 import styles from "@/styles/app.css?url";
 import favicon from "@/assets/logo.png";
+import { Footer, Header } from "@/components/Navigation";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -51,7 +52,11 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
         <HeadContent />
       </head>
       <body className="overflow-y-scroll">
-        {children}
+        <div className="container mx-auto layout">
+          <Header />
+          <main>{children}</main>
+          <Footer />
+        </div>
         <Scripts />
       </body>
     </html>

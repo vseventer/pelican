@@ -91,3 +91,14 @@ export const vaccineRecords = sqliteTable("vaccine_records", {
   dateOfAdministration: integer("doa", { mode: "timestamp" }).notNull(),
   ...recordMetadata,
 });
+
+export default {
+  users,
+  animals,
+  pets,
+  allergies,
+  vaccines,
+  animalVaccines,
+  allergyRecords,
+  vaccineRecords,
+};

@@ -118,3 +118,19 @@
     @apply bg-background text-foreground;
   }
 }
+
+.layout {
+  @apply grid gap-4 min-h-screen;
+
+  grid-template-areas:
+    'header  header'
+    'sidebar main'
+    'footer  footer';
+  grid-template-columns: 240px 1fr;
+  grid-template-rows: auto 1fr auto;
+
+  & > aside { grid-area: sidebar; }
+  & > footer { grid-area: footer; }
+  & > header { grid-area: header; }
+  & > main { grid-area: main; }
+}
