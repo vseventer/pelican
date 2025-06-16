@@ -1,6 +1,6 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 
-import { IdCard } from "@/components/IdCard";
+import { H1 } from "@/components/Typography";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
@@ -8,21 +8,8 @@ export const Route = createFileRoute("/")({
 
 function RouteComponent() {
   return (
-    <div className="min-h-screen grid place-items-center p-4">
-      <IdCard>
-        <ul className="text-center space-y-2">
-          <li>
-            <Link to="/user">
-              I am a <strong>user</strong>
-            </Link>
-          </li>
-          <li>
-            <Link to="/admin">
-              I am an <strong>admin</strong>
-            </Link>
-          </li>
-        </ul>
-      </IdCard>
+    <div className="space-y-2">
+      <H1>Welcome back.</H1>
     </div>
   );
 }

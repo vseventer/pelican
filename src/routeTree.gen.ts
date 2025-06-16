@@ -11,34 +11,23 @@
 import { createServerRootRoute } from '@tanstack/react-start/server'
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AppUserRouteImport } from './routes/_app/user'
-import { Route as AppPetsPetIdRouteImport } from './routes/_app/pets.$petId'
+import { Route as PetsPetIdRouteImport } from './routes/pets.$petId'
 import { ServerRoute as ApiUsersServerRouteImport } from './routes/api/users'
 import { ServerRoute as ApiPetsServerRouteImport } from './routes/api/pets'
 import { ServerRoute as ApiPetsPetIdServerRouteImport } from './routes/api/pets.$petId'
 
 const rootServerRouteImport = createServerRootRoute()
 
-const AppRoute = AppRouteImport.update({
-  id: '/_app',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppUserRoute = AppUserRouteImport.update({
-  id: '/user',
-  path: '/user',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppPetsPetIdRoute = AppPetsPetIdRouteImport.update({
+const PetsPetIdRoute = PetsPetIdRouteImport.update({
   id: '/pets/$petId',
   path: '/pets/$petId',
-  getParentRoute: () => AppRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ApiUsersServerRoute = ApiUsersServerRouteImport.update({
   id: '/api/users',
@@ -58,32 +47,28 @@ const ApiPetsPetIdServerRoute = ApiPetsPetIdServerRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/user': typeof AppUserRoute
-  '/pets/$petId': typeof AppPetsPetIdRoute
+  '/pets/$petId': typeof PetsPetIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/user': typeof AppUserRoute
-  '/pets/$petId': typeof AppPetsPetIdRoute
+  '/pets/$petId': typeof PetsPetIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/_app': typeof AppRouteWithChildren
-  '/_app/user': typeof AppUserRoute
-  '/_app/pets/$petId': typeof AppPetsPetIdRoute
+  '/pets/$petId': typeof PetsPetIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/user' | '/pets/$petId'
+  fullPaths: '/' | '/pets/$petId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/user' | '/pets/$petId'
-  id: '__root__' | '/' | '/_app' | '/_app/user' | '/_app/pets/$petId'
+  to: '/' | '/pets/$petId'
+  id: '__root__' | '/' | '/pets/$petId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AppRoute: typeof AppRouteWithChildren
+  PetsPetIdRoute: typeof PetsPetIdRoute
 }
 export interface FileServerRoutesByFullPath {
   '/api/pets': typeof ApiPetsServerRouteWithChildren
@@ -116,13 +101,6 @@ export interface RootServerRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/_app': {
-      id: '/_app'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof AppRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -130,19 +108,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_app/user': {
-      id: '/_app/user'
-      path: '/user'
-      fullPath: '/user'
-      preLoaderRoute: typeof AppUserRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/pets/$petId': {
-      id: '/_app/pets/$petId'
+    '/pets/$petId': {
+      id: '/pets/$petId'
       path: '/pets/$petId'
       fullPath: '/pets/$petId'
-      preLoaderRoute: typeof AppPetsPetIdRouteImport
-      parentRoute: typeof AppRoute
+      preLoaderRoute: typeof PetsPetIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -172,18 +143,6 @@ declare module '@tanstack/react-start/server' {
   }
 }
 
-interface AppRouteChildren {
-  AppUserRoute: typeof AppUserRoute
-  AppPetsPetIdRoute: typeof AppPetsPetIdRoute
-}
-
-const AppRouteChildren: AppRouteChildren = {
-  AppUserRoute: AppUserRoute,
-  AppPetsPetIdRoute: AppPetsPetIdRoute,
-}
-
-const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
-
 interface ApiPetsServerRouteChildren {
   ApiPetsPetIdServerRoute: typeof ApiPetsPetIdServerRoute
 }
@@ -198,7 +157,7 @@ const ApiPetsServerRouteWithChildren = ApiPetsServerRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AppRoute: AppRouteWithChildren,
+  PetsPetIdRoute: PetsPetIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

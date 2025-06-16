@@ -7,6 +7,7 @@ import {
 } from "@tanstack/react-router";
 
 import { NotFound } from "@/components/NotFound";
+import { Footer, Header, Sidebar } from "@/components/Navigation";
 
 import styles from "@/styles/app.css?url";
 import favicon from "@/assets/logo.png";
@@ -36,11 +37,7 @@ export const Route = createRootRoute({
     ],
   }),
   component: RootComponent,
-  notFoundComponent: () => (
-    <div className="min-h-screen grid place-items-center p-4">
-      <NotFound />
-    </div>
-  ),
+  notFoundComponent: () => <NotFound />,
 });
 
 function RootComponent() {
@@ -58,7 +55,12 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
         <HeadContent />
       </head>
       <body className="overflow-y-scroll">
-        {children}
+        <div className="min-h-screen container mx-auto layout">
+          <Header />
+          <Sidebar />
+          <main>{children}</main>
+          <Footer />
+        </div>
         <Scripts />
       </body>
     </html>

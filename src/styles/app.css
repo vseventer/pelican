@@ -127,6 +127,10 @@ a:any-link {
   }
 }
 
+dt {
+  @apply font-semibold;
+}
+
 .layout {
   @apply grid gap-4;
 

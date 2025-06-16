@@ -1,0 +1,58 @@
+import { createFileRoute, useLoaderData } from "@tanstack/react-router";
+
+import { H1, H2 } from "@/components/Typography";
+import { fetchPet } from "@/lib/hooks";
+
+export const Route = createFileRoute("/pets/$petId")({
+  component: RouteComponent,
+  loader: async ({ params }) => {
+    return fetchPet(params.petId);
+  },
+});
+
+function Allergies({ data }) {
+  const inner =
+    data.length > 0 ? (
+      <ul>
+        {data.map((allergy) => (
+          <li key={allergy.allergy_records.id}>{allergy.allergies.name}</li>
+        ))}
+      </ul>
+    ) : (
+      <em>None</em>
+    );
+  return (
+    <>
+      <H2>Allergies</H2>
+      {inner}
+    </>
+  );
+}
+
+function Vaccines({ data }) {
+  const inner = data.length > 0 ? null : <em>None</em>;
+  return (
+    <>
+      <H2>Vaccine History</H2>
+      {inner}
+    </>
+  );
+}
+
+function RouteComponent() {
+  const data = useLoaderData({ from: "/pets/$petId" });
+
+  return (
+    <div className="space-y-4">
+      <H1>{data.name}</H1>
+      <dl className="space-y-2">
+        <dt>Date of birth</dt>
+        <dd>DOB</dd>
+        <dt>Animal</dt>
+        <dd>{data.animal}</dd>
+      </dl>
+      <Allergies data={data.allergies} />
+      <Vaccines data={data.vaccines} />
+    </div>
+  );
+}

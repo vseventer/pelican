@@ -2,7 +2,7 @@ import { use } from "react";
 import { Link } from "@tanstack/react-router";
 
 import { IdCard } from "@/components/IdCard";
-import { H2 } from "@/components/Typography";
+import { H3 } from "@/components/Typography";
 import { fetchPetList } from "@/lib/hooks";
 
 export function Footer() {
@@ -37,7 +37,7 @@ function PetList() {
   const inner =
     pets.length > 0 ? (
       <>
-        <H2>Your Pets</H2>
+        <H3>Your Pets</H3>
         <hr />
         <ul>
           {pets.map((pet) => (

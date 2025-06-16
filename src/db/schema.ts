@@ -72,9 +72,9 @@ export const allergyRecords = sqliteTable("allergy_records", {
   petId: integer("pet_id")
     .notNull()
     .references(() => pets.id),
-  vaccineId: integer("allergy_id")
+  allergyId: integer("allergy_id")
     .notNull()
-    .references(() => animalVaccines.id),
+    .references(() => allergies.id),
   severity: text("severity").notNull(),
   ...recordMetadata,
 });
