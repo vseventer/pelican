@@ -9,8 +9,11 @@
   "scripts": {
     "prebuild": "npm run lint",
     "build": "vite build",
+    "clean": "npx rimraf .nitro/ .output/ .tanstack/",
     "dev": "vite dev",
-    "lint": "eslint .",
+    "lint": "eslint '*.mjs' '*.ts' src/",
+    "prepreview": "npm run build",
+    "preview": "node .output/server/index.mjs",
     "start": "npm run dev"
   },
   "keywords": [
