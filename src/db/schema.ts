@@ -1,8 +1,15 @@
+import { sql } from "drizzle-orm";
 import { sqliteTable, integer, text } from "drizzle-orm/sqlite-core";
 
 // Shared metadata.
 const metadata = {
-  createdAt: text("created_at").default(new Date().toISOString()).notNull(),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .default(sql`(current_timestamp)`),
+};
+const recordMetadata = {
+  ...metadata,
+  deletedAt: integer("deletedAt", { mode: "timestamp" }),
 };
 
 // Users.
@@ -69,8 +76,7 @@ export const allergyRecords = sqliteTable("allergy_records", {
     .notNull()
     .references(() => animalVaccines.id),
   severity: text("severity").notNull(),
-  deletedAt: text("deletedAt"),
-  ...metadata,
+  ...recordMetadata,
 });
 
 // Vaccine records.
@@ -82,7 +88,6 @@ export const vaccineRecords = sqliteTable("vaccine_records", {
   vaccineId: integer("vaccine_id")
     .notNull()
     .references(() => animalVaccines.id),
-  dateOfAdministration: text("doa").notNull(),
-  deletedAt: text("deletedAt"),
-  ...metadata,
+  dateOfAdministration: integer("doa", { mode: "timestamp" }).notNull(),
+  ...recordMetadata,
 });
