@@ -13,10 +13,14 @@
     "lint": "eslint .",
     "start": "npm run dev"
   },
-  "keywords": [],
+  "keywords": [
+    "MVP",
+    "Pet",
+    "Medical"
+  ],
   "author": "Mark van Seventer <mark@vseventer.com> (https://www.vseventer.com)",
-  "license": "ISC",
   "dependencies": {
+    "@hookform/resolvers": "^5.1.1",
     "@tailwindcss/vite": "^4.1.10",
     "@tanstack/react-router": "^1.121.16",
     "@tanstack/react-start": "^1.121.16",
@@ -28,9 +32,11 @@
     "lucide-react": "^0.515.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-hook-form": "^7.58.0",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.10",
-    "vite": "^6.3.5"
+    "vite": "^6.3.5",
+    "zod": "^3.25.64"
   },
   "devDependencies": {
     "@eslint/js": "^9.29.0",
