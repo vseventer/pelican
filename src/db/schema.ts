@@ -55,6 +55,7 @@ export const animalVaccines = sqliteTable("animal_vaccines", {
   vaccineId: integer("vaccine_id")
     .notNull()
     .references(() => vaccines.id),
+  frequency: text("frequency"),
   ...metadata,
 });
 
