@@ -26,7 +26,10 @@ export const ServerRoute = createServerFileRoute("/api/pets/$petId").methods({
       // Merge with allergies and vaccine history (executed in parallel).
       const promises = [
         db
-          .select()
+          .select({
+            id: allergyRecords.id,
+            name: allergies.name,
+          })
           .from(allergyRecords)
           .innerJoin(allergies, eq(allergyRecords.allergyId, allergies.id))
           .where(
@@ -37,7 +40,11 @@ export const ServerRoute = createServerFileRoute("/api/pets/$petId").methods({
           )
           .orderBy(allergies.name),
         db
-          .select()
+          .select({
+            id: vaccineRecords.id,
+            name: vaccines.name,
+            doa: vaccineRecords.dateOfAdministration,
+          })
           .from(vaccineRecords)
           .innerJoin(vaccines, eq(vaccineRecords.vaccineId, vaccines.id))
           .where(
@@ -50,7 +57,11 @@ export const ServerRoute = createServerFileRoute("/api/pets/$petId").methods({
       ];
       const [allergyData, vaccineHistory] = await Promise.all(promises);
 
-      return json({ ...data[0], allergies: allergyData, vaccineHistory });
+      return json({
+        ...data[0],
+        allergies: allergyData,
+        vaccines: vaccineHistory,
+      });
     }
     return new Response("Pet not found", { status: 404 });
   },

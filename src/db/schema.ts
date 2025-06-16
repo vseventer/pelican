@@ -30,6 +30,7 @@ export const animals = sqliteTable("animals", {
 export const pets = sqliteTable("pets", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   name: text("name").notNull(),
+  dob: integer("dob", { mode: "timestamp" }),
   ownerId: integer("owner_id")
     .notNull()
     .references(() => users.id),

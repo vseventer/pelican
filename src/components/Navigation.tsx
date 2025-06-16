@@ -1,9 +1,7 @@
-import { use } from "react";
 import { Link } from "@tanstack/react-router";
 
 import { IdCard } from "@/components/IdCard";
 import { H3 } from "@/components/Typography";
-import { fetchPetList } from "@/lib/hooks";
 
 export function Footer() {
   return (
@@ -32,7 +30,7 @@ function Pet({ data }) {
 }
 
 function PetList() {
-  const pets = use(fetchPetList());
+  const pets = [];
 
   const inner =
     pets.length > 0 ? (
