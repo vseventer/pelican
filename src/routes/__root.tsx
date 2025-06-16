@@ -7,10 +7,19 @@ import {
 } from "@tanstack/react-router";
 
 import styles from "@/styles/app.css?url";
+import favicon from "@/assets/logo.png";
 
 export const Route = createRootRoute({
   head: () => ({
-    links: [{ rel: "stylesheet", href: styles }],
+    links: [
+      { rel: "stylesheet", href: styles },
+      {
+        rel: "icon",
+        type: "image/png",
+        sizes: "16x16",
+        href: favicon,
+      },
+    ],
     meta: [
       {
         charSet: "utf-8",
