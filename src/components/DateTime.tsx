@@ -4,7 +4,7 @@ const formatter = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
 });
 
-export function DateTime({ date }) {
+export function DateTime({ date }: { date: string }) {
   const formatted = formatter.format(new Date(date));
 
   return (
