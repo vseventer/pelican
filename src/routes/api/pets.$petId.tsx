@@ -11,7 +11,8 @@ import {
   vaccineRecords,
   vaccines,
 } from "@/db/schema";
-import { db, userScope } from "@/lib/db";
+import { USER_ADMIN } from "@/lib/constants";
+import { db } from "@/lib/db";
 
 export const ServerRoute = createServerFileRoute("/api/pets/$petId").methods({
   GET: async ({ params, request }) => {
@@ -26,7 +27,14 @@ export const ServerRoute = createServerFileRoute("/api/pets/$petId").methods({
       .from(pets)
       .innerJoin(users, eq(pets.ownerId, users.id))
       .innerJoin(animals, eq(pets.animalId, animals.id))
-      .where(and(userScope(pets.ownerId, scope), eq(pets.id, params.petId)));
+      .where(() => {
+        const args = [eq(pets.id, params.petId)];
+        if (scope !== USER_ADMIN) {
+          args.push(eq(pets.ownerId, scope));
+        }
+        return and(...args);
+      });
+
     if (data.length > 0) {
       // Merge with allergies and vaccine history (executed in parallel).
       const promises = [
@@ -34,30 +42,34 @@ export const ServerRoute = createServerFileRoute("/api/pets/$petId").methods({
           .select({
             id: allergyRecords.id,
             name: allergies.name,
+            reaction: allergyRecords.reaction,
+            severity: allergyRecords.severity,
+            deleted: allergyRecords.deletedAt,
           })
           .from(allergyRecords)
           .innerJoin(allergies, eq(allergyRecords.allergyId, allergies.id))
-          .where(
-            and(
-              eq(allergyRecords.petId, params.petId)
-              // isNull(allergyRecords.deletedAt)
-            )
-          )
+          .where(() => {
+            const args = [eq(allergyRecords.petId, params.petId)];
+            if (scope !== USER_ADMIN)
+              args.push(isNull(allergyRecords.deletedAt));
+            return and(...args);
+          })
           .orderBy(allergies.name),
         db
           .select({
             id: vaccineRecords.id,
             name: vaccines.name,
             doa: vaccineRecords.dateOfAdministration,
+            deleted: vaccineRecords.deletedAt,
           })
           .from(vaccineRecords)
           .innerJoin(vaccines, eq(vaccineRecords.vaccineId, vaccines.id))
-          .where(
-            and(
-              eq(vaccineRecords.petId, params.petId)
-              // isNull(vaccineRecords.deletedAt)
-            )
-          )
+          .where(() => {
+            const args = [eq(vaccineRecords.petId, params.petId)];
+            if (scope !== USER_ADMIN)
+              args.push(isNull(vaccineRecords.deletedAt));
+            return and(...args);
+          })
           .orderBy(desc(vaccineRecords.dateOfAdministration)),
       ];
       const [allergyData, vaccineHistory] = await Promise.all(promises);
