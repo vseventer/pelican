@@ -22,7 +22,7 @@ export const users = sqliteTable("users", {
 // Animals.
 export const animals = sqliteTable("animals", {
   id: integer("id").primaryKey({ autoIncrement: true }),
-  name: text("name").notNull(),
+  name: text("name").unique(),
   ...metadata,
 });
 
@@ -43,14 +43,14 @@ export const pets = sqliteTable("pets", {
 // Allergies.
 export const allergies = sqliteTable("allergies", {
   id: integer("id").primaryKey({ autoIncrement: true }),
-  name: text("name").notNull(),
+  name: text("name").unique(),
   ...metadata,
 });
 
 // Vaccines.
 export const vaccines = sqliteTable("vaccines", {
   id: integer("id").primaryKey({ autoIncrement: true }),
-  name: text("name").notNull(),
+  name: text("name").unique(),
   ...metadata,
 });
 
@@ -76,6 +76,7 @@ export const allergyRecords = sqliteTable("allergy_records", {
   allergyId: integer("allergy_id")
     .notNull()
     .references(() => allergies.id),
+  reaction: text("reaction"),
   severity: text("severity").notNull(),
   ...recordMetadata,
 });
