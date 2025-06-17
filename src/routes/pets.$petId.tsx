@@ -1,4 +1,8 @@
-import { createFileRoute, useLoaderData } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  notFound,
+  useLoaderData,
+} from "@tanstack/react-router";
 
 import { DateTime } from "@/components/DateTime";
 import { H1, H2 } from "@/components/Typography";
@@ -6,9 +10,15 @@ import { fetchPet } from "@/lib/hooks";
 
 export const Route = createFileRoute("/pets/$petId")({
   component: RouteComponent,
-  loader: async ({ params }) => {
-    return fetchPet(params.petId);
+  loader: async ({ location, params }) => {
+    try {
+      const pet = await fetchPet(params.petId, { id: location.search.user });
+      return pet;
+    } catch (e) {
+      throw notFound();
+    }
   },
+  notFoundComponent: () => "Did your pet escape? We could not find it.",
 });
 
 function Allergies({ data }) {
@@ -66,6 +76,8 @@ function RouteComponent() {
     <div className="space-y-4">
       <H1>{data.name}</H1>
       <dl className="space-y-2">
+        <dt>Owner</dt>
+        <dd>{data.owner}</dd>
         <dt>Date of birth</dt>
         <dd>DOB</dd>
         <dt>Animal</dt>

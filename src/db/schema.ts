@@ -1,4 +1,4 @@
-import { sql } from "drizzle-orm";
+import { type InferSelectModel, sql } from "drizzle-orm";
 import { sqliteTable, integer, text } from "drizzle-orm/sqlite-core";
 
 // Shared metadata.
@@ -18,6 +18,7 @@ export const users = sqliteTable("users", {
   name: text("name").notNull(),
   ...metadata,
 });
+export type User = InferSelectModel<typeof users>;
 
 // Animals.
 export const animals = sqliteTable("animals", {

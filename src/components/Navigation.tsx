@@ -1,7 +1,10 @@
-import { Link } from "@tanstack/react-router";
+import { Suspense, use } from "react";
 
 import { IdCard } from "@/components/IdCard";
+import { Link } from "@/components/Link";
 import { H3 } from "@/components/Typography";
+import { fetchPetList } from "@/lib/hooks";
+import { useUserId } from "./UserIntercept";
 
 export function Footer() {
   return (
@@ -29,8 +32,8 @@ function Pet({ data }) {
   );
 }
 
-function PetList() {
-  const pets = [];
+function PetList({ promise }) {
+  const pets = use(promise);
 
   const inner =
     pets.length > 0 ? (
@@ -57,9 +60,16 @@ function PetList() {
 }
 
 export function Sidebar() {
+  const userId = useUserId();
   return (
-    <aside>
-      <PetList />
+    <aside className="space-y-2">
+      <Suspense fallback="Gathering your pets">
+        <PetList promise={fetchPetList({ id: userId })} />
+      </Suspense>
+      <hr />
+      <Link search={{ user: null }} to="/">
+        Logout
+      </Link>
     </aside>
   );
 }

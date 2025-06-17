@@ -7,21 +7,26 @@ import {
   allergyRecords,
   animals,
   pets,
+  users,
   vaccineRecords,
   vaccines,
 } from "@/db/schema";
-import { db } from "@/lib/db";
+import { db, userScope } from "@/lib/db";
 
 export const ServerRoute = createServerFileRoute("/api/pets/$petId").methods({
-  GET: async ({ params }) => {
+  GET: async ({ params, request }) => {
+    const scope = new URL(request.url).searchParams.get("user");
+
     const data = await db
       .select({
         name: pets.name,
+        owner: users.name,
         animal: animals.name,
       })
       .from(pets)
+      .innerJoin(users, eq(pets.ownerId, users.id))
       .innerJoin(animals, eq(pets.animalId, animals.id))
-      .where(eq(pets.id, params.petId));
+      .where(and(userScope(pets.ownerId, scope), eq(pets.id, params.petId)));
     if (data.length > 0) {
       // Merge with allergies and vaccine history (executed in parallel).
       const promises = [
