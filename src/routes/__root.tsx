@@ -56,7 +56,7 @@ export const Route = createRootRoute({
       try {
         const user = await fetchUser(userId);
         return user;
-      } catch (e) {
+      } catch {
         throw redirect({ to: "/" });
       }
     }
