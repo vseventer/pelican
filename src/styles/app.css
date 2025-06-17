@@ -127,6 +127,10 @@ a:any-link {
   }
 }
 
+button {
+  @apply bg-gray-200 border border-gray-400 p-2 shadow text-sm;
+}
+
 dt {
   @apply font-semibold;
 }
@@ -136,10 +140,20 @@ dt {
 
   grid-template-areas:
     'header  header'
-    'sidebar main'
+    'sidebar sidebar'
+    'main main'
     'footer  footer';
+  grid-template-rows: auto auto 1fr auto;
+
+  @media (width >= 40rem) {
+    grid-template-areas:
+      'header  header'
+      'sidebar main'
+      'footer  footer';
+    grid-template-rows: auto 1fr auto;
+  }
+
   grid-template-columns: 240px 1fr;
-  grid-template-rows: auto 1fr auto;
 
   & > aside { grid-area: sidebar; }
   & > footer { grid-area: footer; }

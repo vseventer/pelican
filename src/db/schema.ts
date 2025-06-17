@@ -1,11 +1,12 @@
-import { type InferSelectModel, sql } from "drizzle-orm";
+import { USER_ADMIN } from "@/lib/constants";
+import { type InferSelectModel } from "drizzle-orm";
 import { sqliteTable, integer, text } from "drizzle-orm/sqlite-core";
 
 // Shared metadata.
 const metadata = {
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
-    .default(sql`(current_timestamp)`),
+    .default(new Date()),
 };
 const recordMetadata = {
   ...metadata,
@@ -18,20 +19,23 @@ export const users = sqliteTable("users", {
   name: text("name").notNull(),
   ...metadata,
 });
-export type User = InferSelectModel<typeof users>;
+export type User =
+  | InferSelectModel<typeof users>
+  | { id: typeof USER_ADMIN; name: "Administrator" };
 
 // Animals.
 export const animals = sqliteTable("animals", {
   id: integer("id").primaryKey({ autoIncrement: true }),
-  name: text("name").unique(),
+  name: text("name").notNull().unique(),
   ...metadata,
 });
+type Animal = InferSelectModel<typeof animals>;
 
 // Pets.
 export const pets = sqliteTable("pets", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   name: text("name").notNull(),
-  dob: integer("dob", { mode: "timestamp" }),
+  dateOfBirth: integer("dob", { mode: "timestamp" }),
   ownerId: integer("owner_id")
     .notNull()
     .references(() => users.id),
@@ -44,16 +48,18 @@ export const pets = sqliteTable("pets", {
 // Allergies.
 export const allergies = sqliteTable("allergies", {
   id: integer("id").primaryKey({ autoIncrement: true }),
-  name: text("name").unique(),
+  name: text("name").notNull().unique(),
   ...metadata,
 });
+type Allergy = InferSelectModel<typeof allergies>;
 
 // Vaccines.
 export const vaccines = sqliteTable("vaccines", {
   id: integer("id").primaryKey({ autoIncrement: true }),
-  name: text("name").unique(),
+  name: text("name").notNull().unique(),
   ...metadata,
 });
+type Vaccine = InferSelectModel<typeof vaccines>;
 
 // Pairing of animals and their vaccines.
 export const animalVaccines = sqliteTable("animal_vaccines", {
@@ -64,7 +70,6 @@ export const animalVaccines = sqliteTable("animal_vaccines", {
   vaccineId: integer("vaccine_id")
     .notNull()
     .references(() => vaccines.id),
-  frequency: text("frequency"),
   ...metadata,
 });
 
@@ -81,6 +86,9 @@ export const allergyRecords = sqliteTable("allergy_records", {
   severity: text("severity").notNull(),
   ...recordMetadata,
 });
+export type AllergyRecord = InferSelectModel<typeof allergyRecords> & {
+  name: Allergy["name"];
+};
 
 // Vaccine records.
 export const vaccineRecords = sqliteTable("vaccine_records", {
@@ -94,14 +102,13 @@ export const vaccineRecords = sqliteTable("vaccine_records", {
   dateOfAdministration: integer("doa", { mode: "timestamp" }).notNull(),
   ...recordMetadata,
 });
+type VaccineRecord = InferSelectModel<typeof vaccineRecords> & {
+  name: Vaccine["name"];
+};
 
-export default {
-  users,
-  animals,
-  pets,
-  allergies,
-  vaccines,
-  animalVaccines,
-  allergyRecords,
-  vaccineRecords,
+export type Pet = InferSelectModel<typeof pets> & {
+  owner: User["name"];
+  animal: Animal["name"];
+  allergies: AllergyRecord[];
+  vaccines: VaccineRecord[];
 };

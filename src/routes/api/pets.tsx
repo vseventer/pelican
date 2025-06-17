@@ -1,4 +1,4 @@
-import { eq, sql } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { json } from "@tanstack/react-start";
 import { createServerFileRoute } from "@tanstack/react-start/server";
 
@@ -8,14 +8,14 @@ import { db } from "@/lib/db";
 
 export const ServerRoute = createServerFileRoute("/api/pets").methods({
   GET: async ({ request }) => {
-    const scope = new URL(request.url).searchParams.get("user");
+    const scope = new URL(request.url).searchParams.get("user") ?? USER_ADMIN;
 
     const data = await db
       .select()
       .from(pets)
       .where(() => {
         if (scope !== USER_ADMIN) {
-          return eq(pets.ownerId, scope);
+          return eq(pets.ownerId, parseInt(scope, 10));
         }
       });
     return json(data);

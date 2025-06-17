@@ -4,11 +4,12 @@ const formatter = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
 });
 
-export function DateTime({ date }: { date: string }) {
-  const formatted = formatter.format(new Date(date));
+export function DateTime({ time, ...delegated }: { time: string }) {
+  const date = new Date(time);
+  const formatted = formatter.format(date);
 
   return (
-    <time className="text-gray-400 text-sm" dateTime={date}>
+    <time dateTime={date.toISOString()} {...delegated}>
       {formatted}
     </time>
   );

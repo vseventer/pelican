@@ -1,13 +1,20 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
+import type { User } from "@/db/schema";
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export async function fetchFromApi(path, user = null) {
+export async function fetchFromApi<T>(
+  path: string,
+  userId: User["id"] | null = null
+): Promise<T> {
   const qs = new URLSearchParams();
-  if (user && user.id) qs.set("user", user.id);
+  if (userId !== null) {
+    qs.set("user", String(userId));
+  }
 
   const response = await fetch(path + "?" + qs.toString());
   if (!response.ok) {

@@ -3,18 +3,9 @@ import { Link as RouterLink, type LinkProps } from "@tanstack/react-router";
 import { useUserId } from "@/components/UserIntercept";
 
 export function Link({ search, ...delegated }: LinkProps) {
-  const scopedSearch = { user: useUserId() };
-
-  // If the search prop explicitly contained a user, use that.
-  if (search && search !== true && "user" in search) {
-    if (search.user === null) {
-      // Logout.
-      delete scopedSearch.user;
-    } else {
-      // Login.
-      scopedSearch.user = search.user;
-    }
+  const userId = useUserId();
+  if (typeof search === "object" || search == null) {
+    return <RouterLink search={{ user: userId, ...search }} {...delegated} />;
   }
-
-  return <RouterLink search={scopedSearch} {...delegated} />;
+  return <RouterLink search={search} {...delegated} />;
 }

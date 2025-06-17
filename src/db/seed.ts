@@ -1,5 +1,4 @@
 import "dotenv/config";
-import { sql } from "drizzle-orm";
 
 import {
   allergies,
@@ -46,20 +45,28 @@ const [animalVaccineData, petData] = await Promise.all([
       {
         animalId: animalData[0].id, // Cat.
         vaccineId: vaccineData[0].id, // FVRCP.
-        frequency: "6 weeks",
       },
       {
         animalId: animalData[0].id, // Cat.
         vaccineId: vaccineData[1].id, // Rabies.
-        frequency: "1 year",
       },
     ])
     .returning({ id: animalVaccines.id }),
   db
     .insert(pets)
     .values([
-      { ownerId: userData[0].id, animalId: animalData[0].id, name: "Fluffly" },
-      { ownerId: userData[1].id, animalId: animalData[1].id, name: "Buster" },
+      {
+        ownerId: userData[0].id,
+        animalId: animalData[0].id,
+        name: "Fluffly",
+        dob: new Date(2010, 0, 15),
+      },
+      {
+        ownerId: userData[1].id,
+        animalId: animalData[1].id,
+        name: "Buster",
+        dob: new Date(2022, 3, 16),
+      },
     ])
     .returning({ id: pets.id }),
 ]);
@@ -84,12 +91,12 @@ await Promise.all([
     {
       petId: petData[0].id,
       vaccineId: animalVaccineData[0].id,
-      dateOfAdministration: sql`(current_timestamp)`,
+      dateOfAdministration: new Date(),
     },
     {
       petId: petData[0].id,
       vaccineId: animalVaccineData[1].id,
-      dateOfAdministration: sql`(current_timestamp)`,
+      dateOfAdministration: new Date(),
     },
   ]),
 ]);

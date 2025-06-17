@@ -3,8 +3,10 @@ import { Suspense, use } from "react";
 import { IdCard } from "@/components/IdCard";
 import { Link } from "@/components/Link";
 import { H3 } from "@/components/Typography";
+import { useUserId } from "@/components/UserIntercept";
+import type { Pet, User } from "@/db/schema";
+import { USER_ADMIN } from "@/lib/constants";
 import { fetchPetList } from "@/lib/hooks";
-import { useUserId } from "./UserIntercept";
 
 export function Footer() {
   return (
@@ -17,22 +19,23 @@ export function Footer() {
 
 export function Header() {
   return (
-    <header className="container flex flex-wrap my-2">
+    <header className="container flex flex-wrap">
       <IdCard />
       <hr />
     </header>
   );
 }
 
-function Pet({ data }) {
+function Pet({ data }: { data: Pet }) {
   return (
-    <Link to="/pets/$petId" params={{ petId: data.id }}>
+    <Link to="/pets/$petId" params={{ petId: String(data.id) }}>
       {data.name}
     </Link>
   );
 }
 
-function PetList({ promise }) {
+function PetList({ promise }: { promise: Promise<Pet[]> }) {
+  const userId = useUserId();
   const pets = use(promise);
 
   const inner =
@@ -54,20 +57,20 @@ function PetList({ promise }) {
     <div className="space-y-2">
       {inner}
       <hr />
-      <Link to="/new">Add a New Pet</Link>
+      {userId === USER_ADMIN ? null : <Link to="/new">Add a New Pet</Link>}
     </div>
   );
 }
 
 export function Sidebar() {
-  const userId = useUserId();
+  const userId = useUserId() as User["id"];
   return (
     <aside className="space-y-2">
       <Suspense fallback="Gathering your pets">
-        <PetList promise={fetchPetList({ id: userId })} />
+        <PetList promise={fetchPetList(userId)} />
       </Suspense>
       <hr />
-      <Link search={{ user: null }} to="/">
+      <Link search={() => ({})} to="/">
         Logout
       </Link>
     </aside>

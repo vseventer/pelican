@@ -1,16 +1,17 @@
 import { type ReactNode, Suspense, use } from "react";
-import { Navigate, useSearch } from "@tanstack/react-router";
+import { Navigate, useLoaderData } from "@tanstack/react-router";
 
 import { IdCard } from "@/components/IdCard";
 import { Link } from "@/components/Link";
 import { H2 } from "@/components/Typography";
 import { fetchUserList } from "@/lib/hooks";
+import { User } from "@/db/schema";
 
-export function useUserId() {
-  return useSearch({ from: "__root__", select: (s) => s.user ?? null });
+export function useUserId(): User["id"] | null {
+  return useLoaderData({ from: "__root__" })?.id ?? null;
 }
 
-function UserList({ promise }) {
+function UserList({ promise }: { promise: Promise<User[]> }) {
   const users = use(promise);
 
   const inner =

@@ -11,14 +11,13 @@ import { NotFound } from "@/components/NotFound";
 import { Footer, Header, Sidebar } from "@/components/Navigation";
 import { UserIntercept } from "@/components/UserIntercept";
 import { User } from "@/db/schema";
-import { USER_ADMIN } from "@/lib/constants";
 import { fetchUser } from "@/lib/hooks";
 
-import styles from "@/styles/app.css?url";
 import favicon from "@/assets/logo.png";
+import styles from "@/styles/app.css?url";
 
 type SearchOptions = {
-  user?: User["id"] | typeof USER_ADMIN;
+  user?: User["id"];
 };
 
 export const Route = createRootRoute({
@@ -84,7 +83,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
       <head>
         <HeadContent />
       </head>
-      <body className="overflow-y-scroll">
+      <body className="overflow-y-scroll p-2">
         <div className="min-h-screen container mx-auto layout my-2">
           <UserIntercept>
             <Header />

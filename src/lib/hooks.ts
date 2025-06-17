@@ -1,21 +1,20 @@
-import { USER_ADMIN } from "./constants";
-import { fetchFromApi } from "./utils";
+import type { Pet, User } from "@/db/schema";
+import { fetchFromApi } from "@/lib/utils";
 
-export function fetchPet(id, user) {
-  return fetchFromApi(`/api/pets/${id}`, user);
+type UserId = User["id"];
+
+export function fetchPet(id, user?: UserId) {
+  return fetchFromApi<Pet>(`/api/pets/${id}`, user);
 }
 
-export function fetchPetList(user) {
-  return fetchFromApi("/api/pets", user);
+export function fetchPetList(user?: UserId) {
+  return fetchFromApi<Pet[]>("/api/pets", user);
 }
 
-export function fetchUser(id) {
-  if (id === USER_ADMIN) {
-    return { name: "Administrator" };
-  }
-  return fetchFromApi(`/api/users/${id}`);
+export function fetchUser(user?: UserId) {
+  return fetchFromApi<User>(`/api/users/${user}`);
 }
 
 export function fetchUserList() {
-  return fetchFromApi("/api/users");
+  return fetchFromApi<User[]>("/api/users");
 }
