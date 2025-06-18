@@ -29,7 +29,7 @@ export const animals = sqliteTable("animals", {
   name: text("name").notNull().unique(),
   ...metadata,
 });
-type Animal = InferSelectModel<typeof animals>;
+export type Animal = InferSelectModel<typeof animals>;
 
 // Pets.
 export const pets = sqliteTable("pets", {

@@ -57,7 +57,7 @@ function PetList({ promise }: { promise: Promise<Pet[]> }) {
     <div className="space-y-2">
       {inner}
       <hr />
-      {userId === USER_ADMIN ? null : <Link to="/new">Add a New Pet</Link>}
+      {userId === USER_ADMIN ? null : <Link to="/pets/new">Add a New Pet</Link>}
     </div>
   );
 }

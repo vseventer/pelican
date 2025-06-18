@@ -33,7 +33,7 @@ export function NewUserForm() {
         setError("name", errors.name);
       }}
     >
-      <div className="flex flex-row gap-2">
+      <div className="flex flex-row gap-2 items-center">
         <input
           className="border p-1"
           placeholder="Create a new user"

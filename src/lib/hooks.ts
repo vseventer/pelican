@@ -1,7 +1,11 @@
-import type { Pet, User } from "@/db/schema";
+import type { Animal, Pet, User } from "@/db/schema";
 import { fetchFromApi } from "@/lib/utils";
 
 type UserId = User["id"];
+
+export function fetchAnimals() {
+  return fetchFromApi<Animal[]>("/api/animals");
+}
 
 export function fetchPet(id, user?: UserId) {
   return fetchFromApi<Pet>(`/api/pets/${id}`, user);

@@ -12,9 +12,11 @@ import { createServerRootRoute } from '@tanstack/react-start/server'
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as PetsPetIdRouteImport } from './routes/pets.$petId'
+import { Route as PetsNewRouteImport } from './routes/pets/new'
+import { Route as PetsPetIdRouteImport } from './routes/pets/$petId'
 import { ServerRoute as ApiUsersServerRouteImport } from './routes/api/users'
 import { ServerRoute as ApiPetsServerRouteImport } from './routes/api/pets'
+import { ServerRoute as ApiAnimalsServerRouteImport } from './routes/api/animals'
 import { ServerRoute as ApiUsersUserIdServerRouteImport } from './routes/api/users.$userId'
 import { ServerRoute as ApiPetsPetIdServerRouteImport } from './routes/api/pets.$petId'
 
@@ -23,6 +25,11 @@ const rootServerRouteImport = createServerRootRoute()
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PetsNewRoute = PetsNewRouteImport.update({
+  id: '/pets/new',
+  path: '/pets/new',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PetsPetIdRoute = PetsPetIdRouteImport.update({
@@ -40,6 +47,11 @@ const ApiPetsServerRoute = ApiPetsServerRouteImport.update({
   path: '/api/pets',
   getParentRoute: () => rootServerRouteImport,
 } as any)
+const ApiAnimalsServerRoute = ApiAnimalsServerRouteImport.update({
+  id: '/api/animals',
+  path: '/api/animals',
+  getParentRoute: () => rootServerRouteImport,
+} as any)
 const ApiUsersUserIdServerRoute = ApiUsersUserIdServerRouteImport.update({
   id: '/$userId',
   path: '/$userId',
@@ -54,35 +66,41 @@ const ApiPetsPetIdServerRoute = ApiPetsPetIdServerRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/pets/$petId': typeof PetsPetIdRoute
+  '/pets/new': typeof PetsNewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/pets/$petId': typeof PetsPetIdRoute
+  '/pets/new': typeof PetsNewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/pets/$petId': typeof PetsPetIdRoute
+  '/pets/new': typeof PetsNewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/pets/$petId'
+  fullPaths: '/' | '/pets/$petId' | '/pets/new'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/pets/$petId'
-  id: '__root__' | '/' | '/pets/$petId'
+  to: '/' | '/pets/$petId' | '/pets/new'
+  id: '__root__' | '/' | '/pets/$petId' | '/pets/new'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   PetsPetIdRoute: typeof PetsPetIdRoute
+  PetsNewRoute: typeof PetsNewRoute
 }
 export interface FileServerRoutesByFullPath {
+  '/api/animals': typeof ApiAnimalsServerRoute
   '/api/pets': typeof ApiPetsServerRouteWithChildren
   '/api/users': typeof ApiUsersServerRouteWithChildren
   '/api/pets/$petId': typeof ApiPetsPetIdServerRoute
   '/api/users/$userId': typeof ApiUsersUserIdServerRoute
 }
 export interface FileServerRoutesByTo {
+  '/api/animals': typeof ApiAnimalsServerRoute
   '/api/pets': typeof ApiPetsServerRouteWithChildren
   '/api/users': typeof ApiUsersServerRouteWithChildren
   '/api/pets/$petId': typeof ApiPetsPetIdServerRoute
@@ -90,6 +108,7 @@ export interface FileServerRoutesByTo {
 }
 export interface FileServerRoutesById {
   __root__: typeof rootServerRouteImport
+  '/api/animals': typeof ApiAnimalsServerRoute
   '/api/pets': typeof ApiPetsServerRouteWithChildren
   '/api/users': typeof ApiUsersServerRouteWithChildren
   '/api/pets/$petId': typeof ApiPetsPetIdServerRoute
@@ -98,14 +117,21 @@ export interface FileServerRoutesById {
 export interface FileServerRouteTypes {
   fileServerRoutesByFullPath: FileServerRoutesByFullPath
   fullPaths:
+    | '/api/animals'
     | '/api/pets'
     | '/api/users'
     | '/api/pets/$petId'
     | '/api/users/$userId'
   fileServerRoutesByTo: FileServerRoutesByTo
-  to: '/api/pets' | '/api/users' | '/api/pets/$petId' | '/api/users/$userId'
+  to:
+    | '/api/animals'
+    | '/api/pets'
+    | '/api/users'
+    | '/api/pets/$petId'
+    | '/api/users/$userId'
   id:
     | '__root__'
+    | '/api/animals'
     | '/api/pets'
     | '/api/users'
     | '/api/pets/$petId'
@@ -113,6 +139,7 @@ export interface FileServerRouteTypes {
   fileServerRoutesById: FileServerRoutesById
 }
 export interface RootServerRouteChildren {
+  ApiAnimalsServerRoute: typeof ApiAnimalsServerRoute
   ApiPetsServerRoute: typeof ApiPetsServerRouteWithChildren
   ApiUsersServerRoute: typeof ApiUsersServerRouteWithChildren
 }
@@ -124,6 +151,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pets/new': {
+      id: '/pets/new'
+      path: '/pets/new'
+      fullPath: '/pets/new'
+      preLoaderRoute: typeof PetsNewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pets/$petId': {
@@ -149,6 +183,13 @@ declare module '@tanstack/react-start/server' {
       path: '/api/pets'
       fullPath: '/api/pets'
       preLoaderRoute: typeof ApiPetsServerRouteImport
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/api/animals': {
+      id: '/api/animals'
+      path: '/api/animals'
+      fullPath: '/api/animals'
+      preLoaderRoute: typeof ApiAnimalsServerRouteImport
       parentRoute: typeof rootServerRouteImport
     }
     '/api/users/$userId': {
@@ -195,11 +236,13 @@ const ApiUsersServerRouteWithChildren = ApiUsersServerRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   PetsPetIdRoute: PetsPetIdRoute,
+  PetsNewRoute: PetsNewRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
 const rootServerRouteChildren: RootServerRouteChildren = {
+  ApiAnimalsServerRoute: ApiAnimalsServerRoute,
   ApiPetsServerRoute: ApiPetsServerRouteWithChildren,
   ApiUsersServerRoute: ApiUsersServerRouteWithChildren,
 }

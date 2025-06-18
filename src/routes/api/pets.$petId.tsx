@@ -1,4 +1,4 @@
-import { and, desc, eq, isNull } from "drizzle-orm";
+import { and, desc, eq, isNull, sql } from "drizzle-orm";
 import { json } from "@tanstack/react-start";
 import { createServerFileRoute } from "@tanstack/react-start/server";
 
@@ -56,7 +56,7 @@ export const ServerRoute = createServerFileRoute("/api/pets/$petId").methods({
               args.push(isNull(allergyRecords.deletedAt));
             return and(...args);
           })
-          .orderBy(allergies.name),
+          .orderBy(sql`lower(${allergies.name})`),
         db
           .select({
             id: vaccineRecords.id,
