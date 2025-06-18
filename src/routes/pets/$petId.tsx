@@ -5,6 +5,7 @@ import {
 } from "@tanstack/react-router";
 
 import { DateTime } from "@/components/DateTime";
+import { VaccineForm } from "@/components/forms/vaccine";
 import { H1, H2 } from "@/components/Typography";
 import { useUserId } from "@/components/UserIntercept";
 import type { AllergyRecord, Pet, VaccineRecord } from "@/db/schema";
@@ -81,7 +82,13 @@ function Vaccine({ data }: { data: VaccineRecord }) {
   );
 }
 
-function Vaccines({ data }: { data: Pet["vaccines"] }) {
+function Vaccines({
+  data,
+  petId,
+}: {
+  data: Pet["vaccines"];
+  petId: Pet["id"];
+}) {
   const inner =
     data.length > 0 ? (
       <ul className="space-y-2">
@@ -105,7 +112,7 @@ function Vaccines({ data }: { data: Pet["vaccines"] }) {
     <>
       <H2>Vaccine History</H2>
       {inner}
-      <button>Add Vaccine</button>
+      <VaccineForm petId={petId} />
     </>
   );
 }
@@ -139,7 +146,7 @@ function RouteComponent() {
       <hr />
       <Allergies data={data.allergies} />
       <hr />
-      <Vaccines data={data.vaccines} />
+      <Vaccines data={data.vaccines} petId={data.id} />
     </div>
   );
 }

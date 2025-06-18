@@ -1,9 +1,10 @@
 import { Form, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useLoaderData, useNavigate, useRouter } from "@tanstack/react-router";
+import { useLoaderData, useNavigate } from "@tanstack/react-router";
 
 import { useUserId } from "@/components/UserIntercept";
+import { TODAY } from "@/lib/constants";
 
 export const petSchema = z
   .object({
@@ -18,8 +19,6 @@ export const petSchema = z
   });
 type PetSchema = z.infer<typeof petSchema>;
 
-const [TODAY] = new Date().toISOString().split("T");
-
 export function PetForm() {
   const navigate = useNavigate();
   const animals = useLoaderData({ from: "/pets/new" });
@@ -31,7 +30,7 @@ export function PetForm() {
     register,
     setError,
   } = useForm<PetSchema>({
-    defaultValues: { name: "", dateOfBirth: undefined },
+    defaultValues: { name: "", dateOfBirth: "" },
     resolver: zodResolver(petSchema),
   });
 

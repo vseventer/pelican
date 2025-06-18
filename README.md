@@ -157,6 +157,7 @@ There's a number of items listed below where improvements can be made.
 
   - Replace inline editing with modals for more structured workflows
   - Enable deeplinking to modals to create new records (for better navigation and shareability)
+  - Extract repeated styles (e.g. inputs) to common components so that they can easily be reused.
 
 - **Testing**:
 

@@ -46,7 +46,7 @@ export const ServerRoute = createServerFileRoute("/api/pets").methods({
               .returning({ id: animals.id })
           )[0].id
         : data.animal;
-      console.log(scope, animalId);
+
       // Next, insert pet.
       const response = await db
         .insert(pets)
