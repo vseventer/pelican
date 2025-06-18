@@ -7,7 +7,7 @@ import { db } from "@/lib/db";
 
 export const ServerRoute = createServerFileRoute("/api/users").methods({
   GET: async () => {
-    const data = await db.select().from(users);
+    const data = await db.select().from(users).orderBy(users.name);
     return json(data);
   },
   POST: async ({ request }) => {

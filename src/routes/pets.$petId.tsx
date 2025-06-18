@@ -7,7 +7,7 @@ import {
 import { DateTime } from "@/components/DateTime";
 import { H1, H2 } from "@/components/Typography";
 import { useUserId } from "@/components/UserIntercept";
-import type { AllergyRecord, Pet } from "@/db/schema";
+import type { AllergyRecord, Pet, VaccineRecord } from "@/db/schema";
 import { fetchPet } from "@/lib/hooks";
 import { USER_ADMIN } from "@/lib/constants";
 
@@ -26,7 +26,7 @@ export const Route = createFileRoute("/pets/$petId")({
 
 function Allergy({ data }: { data: AllergyRecord }) {
   return (
-    <>
+    <p>
       <strong>{data.name}</strong>
       {data.reaction ? (
         <>
@@ -35,7 +35,7 @@ function Allergy({ data }: { data: AllergyRecord }) {
           {data.severity ? <em>({data.severity})</em> : null}
         </>
       ) : null}
-    </>
+    </p>
   );
 }
 
@@ -44,8 +44,13 @@ function Allergies({ data }: { data: Pet["allergies"] }) {
     data.length > 0 ? (
       <ul>
         {data.map((allergy) => (
-          <li key={allergy.id}>
+          <li className="border-b space-y-2 py-2" key={allergy.id}>
             <Allergy data={allergy} />
+            {allergy.deletedAt ? (
+              <span className="bg-red-300 italic p-1 text-sm">
+                This record was deleted on <DateTime time={allergy.deletedAt} />
+              </span>
+            ) : null}
           </li>
         ))}
       </ul>
@@ -63,18 +68,31 @@ function Allergies({ data }: { data: Pet["allergies"] }) {
   );
 }
 
+function Vaccine({ data }: { data: VaccineRecord }) {
+  return (
+    <p>
+      <DateTime
+        className="text-gray-400 text-sm"
+        time={data.dateOfAdministration}
+      />
+      <br />
+      {data.name}
+    </p>
+  );
+}
+
 function Vaccines({ data }: { data: Pet["vaccines"] }) {
   const inner =
     data.length > 0 ? (
       <ul className="space-y-2">
         {data.map((vaccine) => (
-          <li key={vaccine.id}>
-            <DateTime
-              className="text-gray-400 text-sm"
-              time={vaccine.dateOfAdministration}
-            />
-            <br />
-            {vaccine.name}
+          <li className="border-b space-y-2 py-2" key={vaccine.id}>
+            <Vaccine data={vaccine} />
+            {vaccine.deletedAt ? (
+              <span className="bg-red-300 italic p-1 text-sm">
+                This record was deleted on <DateTime time={vaccine.deletedAt} />
+              </span>
+            ) : null}
           </li>
         ))}
       </ul>

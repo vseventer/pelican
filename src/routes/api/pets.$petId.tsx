@@ -46,7 +46,7 @@ export const ServerRoute = createServerFileRoute("/api/pets/$petId").methods({
             name: allergies.name,
             reaction: allergyRecords.reaction,
             severity: allergyRecords.severity,
-            deleted: allergyRecords.deletedAt,
+            deletedAt: allergyRecords.deletedAt,
           })
           .from(allergyRecords)
           .innerJoin(allergies, eq(allergyRecords.allergyId, allergies.id))
@@ -62,7 +62,7 @@ export const ServerRoute = createServerFileRoute("/api/pets/$petId").methods({
             id: vaccineRecords.id,
             name: vaccines.name,
             dateOfAdministration: vaccineRecords.dateOfAdministration,
-            deleted: vaccineRecords.deletedAt,
+            deletedAt: vaccineRecords.deletedAt,
           })
           .from(vaccineRecords)
           .innerJoin(vaccines, eq(vaccineRecords.vaccineId, vaccines.id))

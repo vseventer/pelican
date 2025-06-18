@@ -84,10 +84,51 @@ The basic app scaffolding and running took under 30 minutes.
 > - The GitHub repo includes a pre-built SQLite file with basic sample data.
 > - The `db/` folder contains the seed script.
 
+## Front-End
+
+The main pages include:
+
+- **Landing Page** (unauthenticated):
+
+  - Lists all users
+  - Allows creation of a new user
+
+- **Home Page** (authenticated):
+
+  - Lists pets for the current user on the left sidebar
+  - Clicking a pet opens the detailed view
+
+- **Details Page**:
+
+  - Shows pet info, including allergies and vaccines
+  - Allows adding new allergies and vaccine records
+
+## Back-End
+
+API routes follow REST principles and are co-located with the front-end using TanStack Start’s file-based routing. Major endpoints include:
+
+- **Users**
+
+  - `GET /api/users` — List all users
+  - `GET /api/users/:id` — Get a specific user
+  - `POST /api/users` — Create a new user
+
+- **Pets**
+
+  - `GET /api/pets` — Admin: List all pets
+  - `GET /api/pets/:id` — Get a specific pet
+  - `POST /api/pets` — Create new pet
+
+- **Validation**
+
+  - All data mutating endpoints use **Zod** for schema validation
+  - Shared schemas between front-end and back-end ensure consistency and type safety
+
 ## Polish
 
 The following small items were accomplished to give the MVP a bit more character:
 
+- Name. Pelican sounds like a bit like "Medical", "Can", and starts with "Pe" from pet.
 - Logo. Yes, behind the scene it's all Dr. Pelican Ph.D. keeping the records.
 - Documentation was assisted by ChatGPT, which helped structure and write readable summaries based on design and architectural decisions.
 

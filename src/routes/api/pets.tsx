@@ -17,7 +17,8 @@ export const ServerRoute = createServerFileRoute("/api/pets").methods({
         if (scope !== USER_ADMIN) {
           return eq(pets.ownerId, parseInt(scope, 10));
         }
-      });
+      })
+      .orderBy(pets.name);
     return json(data);
   },
 });

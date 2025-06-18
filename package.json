@@ -14,6 +14,8 @@
     "lint": "eslint '*.mjs' '*.ts' src/",
     "prepreview": "npm run build",
     "preview": "node .output/server/index.mjs",
+    "preseed": "npx rimraf data/sqlite.db db/",
+    "seed": "npx drizzle-kit generate --name seed && sqlite3 data/sqlite.db < db/0000_seed.sql && npx tsx src/db/seed.ts",
     "start": "npm run dev"
   },
   "keywords": [

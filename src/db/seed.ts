@@ -59,13 +59,13 @@ const [animalVaccineData, petData] = await Promise.all([
         ownerId: userData[0].id,
         animalId: animalData[0].id,
         name: "Fluffly",
-        dob: new Date(2010, 0, 15),
+        dateOfBirth: new Date(2010, 0, 15),
       },
       {
         ownerId: userData[1].id,
         animalId: animalData[1].id,
         name: "Buster",
-        dob: new Date(2022, 3, 16),
+        dateOfBirth: new Date(2022, 3, 16),
       },
     ])
     .returning({ id: pets.id }),
@@ -79,6 +79,13 @@ await Promise.all([
       allergyId: allergyData[0].id,
       reaction: "Cough",
       severity: "mild",
+      deletedAt: new Date(2020, 9, 12),
+    },
+    {
+      petId: petData[0].id,
+      allergyId: allergyData[0].id,
+      reaction: "Cough",
+      severity: "severe",
     },
     {
       petId: petData[1].id,
@@ -91,12 +98,18 @@ await Promise.all([
     {
       petId: petData[0].id,
       vaccineId: animalVaccineData[0].id,
-      dateOfAdministration: new Date(),
+      dateOfAdministration: new Date(2024, 1, 10),
+      deletedAt: new Date(2024, 1, 12),
+    },
+    {
+      petId: petData[0].id,
+      vaccineId: animalVaccineData[0].id,
+      dateOfAdministration: new Date(2024, 1, 12),
     },
     {
       petId: petData[0].id,
       vaccineId: animalVaccineData[1].id,
-      dateOfAdministration: new Date(),
+      dateOfAdministration: new Date(2025, 3, 22),
     },
   ]),
 ]);

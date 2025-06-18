@@ -102,7 +102,7 @@ export const vaccineRecords = sqliteTable("vaccine_records", {
   dateOfAdministration: integer("doa", { mode: "timestamp" }).notNull(),
   ...recordMetadata,
 });
-type VaccineRecord = InferSelectModel<typeof vaccineRecords> & {
+export type VaccineRecord = InferSelectModel<typeof vaccineRecords> & {
   name: Vaccine["name"];
 };
 
