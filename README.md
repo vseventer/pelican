@@ -117,6 +117,8 @@ API routes follow REST principles and are co-located with the front-end using Ta
 
   - `GET /api/pets` — Admin: List all pets
   - `GET /api/pets/:id` — Get a specific pet
+  - `DELETE`, `POST /api/pets/:id/allergy` - Manage a pet's allergies
+  - `DELETE`, `POST /api/pets/:id/vaccine` - Manage a pet's vaccines
   - `POST /api/pets` — Create new pet
 
 - **Validation**
