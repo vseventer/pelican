@@ -143,3 +143,22 @@ The following small items were accomplished to give the MVP a bit more character
 - Setting up a basic query-string-based **Auth** took longer than expected.
 - Added proper `NotFound` and global error pages took a bit of time, but add a lot of value.
 - Implemented both frontend and backend **validation** to ensure input sanitation and avoid malicious data insertion.
+
+## Future Improvements
+
+There's a number of items listed below where improvements can be made.
+
+- **Build Optimization**:
+
+  - Remove unused CSS
+  - Add bundle splitting and optimize image assets for production
+
+- **UI Enhancements**:
+
+  - Replace inline editing with modals for more structured workflows
+  - Enable deeplinking to modals to create new records (for better navigation and shareability)
+
+- **Testing**:
+
+  - Add basic UI tests for core flows (authentication, adding medical records)
+  - Add backend tests to validate input handling and access control logic (e.g., authorization checks)
