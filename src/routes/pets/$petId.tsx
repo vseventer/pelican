@@ -5,7 +5,7 @@ import {
 } from "@tanstack/react-router";
 
 import { DateTime } from "@/components/DateTime";
-import { VaccineForm } from "@/components/forms/vaccine";
+import { DeleteForm, VaccineForm } from "@/components/forms/Vaccine";
 import { H1, H2 } from "@/components/Typography";
 import { useUserId } from "@/components/UserIntercept";
 import type { AllergyRecord, Pet, VaccineRecord } from "@/db/schema";
@@ -70,16 +70,19 @@ function Allergies({ data }: { data: Pet["allergies"] }) {
   );
 }
 
-function Vaccine({ data }: { data: VaccineRecord }) {
+function Vaccine({ data, petId }: { data: VaccineRecord; petId: Pet["id"] }) {
   return (
-    <p>
-      <DateTime
-        className="text-gray-500 text-sm"
-        time={data.dateOfAdministration}
-      />
-      <br />
-      {data.name}
-    </p>
+    <div className="flex flex-row gap-2 items-center justify-between">
+      <p>
+        <DateTime
+          className="text-gray-500 text-sm"
+          time={data.dateOfAdministration}
+        />
+        <br />
+        {data.name}
+      </p>
+      <DeleteForm petId={petId} vaccine={data} />
+    </div>
   );
 }
 
@@ -96,7 +99,7 @@ function Vaccines({
       <ul className="space-y-2">
         {data.map((vaccine) => (
           <li className="border-b space-y-2 py-2" key={vaccine.id}>
-            <Vaccine data={vaccine} />
+            <Vaccine data={vaccine} petId={petId} />
             {vaccine.deletedAt ? (
               <span className="bg-red-300 italic p-1 text-sm">
                 This record was deleted on <DateTime time={vaccine.deletedAt} />

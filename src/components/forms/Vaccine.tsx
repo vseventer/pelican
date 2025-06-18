@@ -4,8 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useLoaderData, useRouter } from "@tanstack/react-router";
 
 import { useUserId } from "@/components/UserIntercept";
-import { Pet } from "@/db/schema";
-import { TODAY } from "@/lib/constants";
+import { Pet, VaccineRecord } from "@/db/schema";
+import { TODAY, USER_ADMIN } from "@/lib/constants";
 
 export const vaccineSchema = z
   .object({
@@ -18,6 +18,34 @@ export const vaccineSchema = z
     path: ["name"],
   });
 type VaccineSchema = z.infer<typeof vaccineSchema>;
+
+export function DeleteForm({
+  petId,
+  vaccine,
+}: {
+  petId: Pet["id"];
+  vaccine: VaccineRecord;
+}) {
+  const router = useRouter();
+  const userId = useUserId();
+  const {
+    control,
+    formState: { isSubmitting },
+  } = useForm();
+
+  return userId === USER_ADMIN && vaccine.deletedAt === null ? (
+    <Form
+      action={`/api/pets/${petId}/vaccine?id=${vaccine.id}`}
+      control={control}
+      method="delete"
+      onSuccess={() => router.invalidate()}
+    >
+      <button disabled={isSubmitting} type="submit">
+        Delete
+      </button>
+    </Form>
+  ) : null;
+}
 
 export function VaccineForm({ petId }: { petId: Pet["id"] }) {
   const router = useRouter();

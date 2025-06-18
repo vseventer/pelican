@@ -1,9 +1,8 @@
 import { eq } from "drizzle-orm";
 import { createServerFileRoute } from "@tanstack/react-start/server";
 
-import { vaccineSchema } from "@/components/forms/vaccine";
+import { vaccineSchema } from "@/components/forms/Vaccine";
 import {
-  animals,
   AnimalVaccine,
   animalVaccines,
   Pet,
@@ -37,6 +36,21 @@ async function insertNewVaccine(
 export const ServerRoute = createServerFileRoute(
   "/api/pets/$petId/vaccine"
 ).methods({
+  DELETE: async ({ request }) => {
+    console.log("deze");
+    const id = new URL(request.url).searchParams.get("id");
+
+    // NOTE:
+    // - Non-administrators are not supposed to delete records, so we should add a check here.
+
+    if (id) {
+      await db
+        .update(vaccineRecords)
+        .set({ deletedAt: new Date() })
+        .where(eq(vaccineRecords.id, parseInt(id, 10)));
+    }
+    return new Response(null, { status: 204 });
+  },
   POST: async ({ params, request }) => {
     try {
       const petId = parseInt(params.petId);
