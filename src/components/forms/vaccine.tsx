@@ -21,7 +21,7 @@ type VaccineSchema = z.infer<typeof vaccineSchema>;
 
 export function VaccineForm({ petId }: { petId: Pet["id"] }) {
   const { availableVaccines } = useLoaderData({ from: "/pets/$petId" });
-  const user = useUserId();
+  const userId = useUserId();
 
   const {
     control,
@@ -35,7 +35,7 @@ export function VaccineForm({ petId }: { petId: Pet["id"] }) {
 
   return (
     <Form
-      action={`/api/pets/${petId}/vaccine?user=${user}`}
+      action={`/api/pets/${petId}/vaccine?user=${userId}`}
       className="space-y-2"
       control={control}
       onError={async ({ response }) => {

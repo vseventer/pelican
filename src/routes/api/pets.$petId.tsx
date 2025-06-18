@@ -81,7 +81,8 @@ export const ServerRoute = createServerFileRoute("/api/pets/$petId").methods({
           .select({ id: vaccines.id, name: vaccines.name })
           .from(vaccines)
           .innerJoin(animalVaccines, eq(vaccines.id, animalVaccines.vaccineId))
-          .where(eq(animalVaccines.animalId, pet.animalId)),
+          .where(eq(animalVaccines.animalId, pet.animalId))
+          .orderBy(sql`lower(${vaccines.name})`),
       ];
       const [allergyData, vaccineHistory, availableVaccines] =
         await Promise.all(promises);

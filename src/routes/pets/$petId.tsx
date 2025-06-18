@@ -41,6 +41,7 @@ function Allergy({ data }: { data: AllergyRecord }) {
 }
 
 function Allergies({ data }: { data: Pet["allergies"] }) {
+  const userId = useUserId();
   const inner =
     data.length > 0 ? (
       <ul>
@@ -64,7 +65,7 @@ function Allergies({ data }: { data: Pet["allergies"] }) {
     <>
       <H2>Allergies</H2>
       {inner}
-      <button>Add Allergy</button>
+      {userId === USER_ADMIN ? null : <button>Add Allergy</button>}
     </>
   );
 }
@@ -89,6 +90,7 @@ function Vaccines({
   data: Pet["vaccines"];
   petId: Pet["id"];
 }) {
+  const userId = useUserId();
   const inner =
     data.length > 0 ? (
       <ul className="space-y-2">
@@ -112,7 +114,7 @@ function Vaccines({
     <>
       <H2>Vaccine History</H2>
       {inner}
-      <VaccineForm petId={petId} />
+      {userId === USER_ADMIN ? null : <VaccineForm petId={petId} />}
     </>
   );
 }

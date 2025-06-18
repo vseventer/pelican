@@ -22,7 +22,7 @@ type PetSchema = z.infer<typeof petSchema>;
 export function PetForm() {
   const navigate = useNavigate();
   const animals = useLoaderData({ from: "/pets/new" });
-  const user = useUserId();
+  const userId = useUserId();
 
   const {
     control,
@@ -36,12 +36,16 @@ export function PetForm() {
 
   return (
     <Form
-      action={`/api/pets?user=${user}`}
+      action={`/api/pets?user=${userId}`}
       className="space-y-4 text-sm"
       control={control}
       onSuccess={async ({ response }) => {
         const [{ id: petId }] = await response.json();
-        navigate({ to: "/pets/$petId", params: { petId }, search: { user } });
+        navigate({
+          to: "/pets/$petId",
+          params: { petId },
+          search: { user: userId },
+        });
       }}
       onError={async ({ response }) => {
         const errors = await response.json();
