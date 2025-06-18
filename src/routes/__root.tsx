@@ -42,6 +42,10 @@ export const Route = createRootRoute({
       {
         title: "Pelican",
       },
+      {
+        name: "description",
+        content: "Pelican: a medical record tracker for pets.",
+      },
     ],
   }),
   beforeLoad: ({ location, search }) => {
@@ -79,12 +83,12 @@ function RootComponent() {
 
 function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html>
+    <html lang="en">
       <head>
         <HeadContent />
       </head>
-      <body className="overflow-y-scroll p-2">
-        <div className="min-h-screen container mx-auto layout my-2">
+      <body className="overflow-y-scroll">
+        <div className="min-h-screen container mx-auto layout p-2">
           <UserIntercept>
             <Header />
             <Sidebar />

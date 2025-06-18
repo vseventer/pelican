@@ -72,7 +72,7 @@ function Vaccine({ data }: { data: VaccineRecord }) {
   return (
     <p>
       <DateTime
-        className="text-gray-400 text-sm"
+        className="text-gray-500 text-sm"
         time={data.dateOfAdministration}
       />
       <br />

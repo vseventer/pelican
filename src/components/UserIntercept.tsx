@@ -2,6 +2,7 @@ import { type ReactNode, Suspense, use } from "react";
 import { Navigate, useLoaderData } from "@tanstack/react-router";
 
 import { NewUserForm } from "@/components/forms/User";
+import { Footer } from "@/components/Navigation";
 import { IdCard } from "@/components/IdCard";
 import { Link } from "@/components/Link";
 import { H2 } from "@/components/Typography";
@@ -29,13 +30,16 @@ function UserList({ promise }: { promise: Promise<User[]> }) {
     ) : null;
 
   return (
-    <aside className="space-y-4">
-      <H2>Who are you?</H2>
-      {inner}
-      <NewUserForm />
-      <hr />
-      <Link search={{ user: "admin" }}>Administrator</Link>
-    </aside>
+    <>
+      <aside className="space-y-4">
+        <H2>Who are you?</H2>
+        {inner}
+        <NewUserForm />
+        <hr />
+        <Link search={{ user: "admin" }}>Administrator</Link>
+      </aside>
+      <Footer />
+    </>
   );
 }
 

@@ -5,6 +5,5 @@ import {
 
 import * as schema from "@/db/schema";
 
-export const db: BetterSQLite3Database<typeof schema> = drizzle(
-  process.env.DATABASE_URL as string
-);
+export const db: BetterSQLite3Database<typeof schema> =
+  drizzle("./data/sqlite.db");
