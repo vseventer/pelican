@@ -112,5 +112,6 @@ export type Pet = InferSelectModel<typeof pets> & {
   animal: Animal["name"];
   allergies: AllergyRecord[];
   vaccines: VaccineRecord[];
+  availableAllergies: Allergy[];
   availableVaccines: Vaccine[];
 };

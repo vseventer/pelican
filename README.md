@@ -148,6 +148,11 @@ The following small items were accomplished to give the MVP a bit more character
 
 There's a number of items listed below where improvements can be made.
 
+- **Database Schema**:
+
+  - Additional constraints should be considered (an allergy is probably unique to a pet, we shouldn't be able to record two identical allergies).
+  - When entering a custom vaccine, if it already exists in vaccines but not in the animal-vaccine linking table, this currently is an edge case that errors out.
+
 - **Build Optimization**:
 
   - Remove unused CSS

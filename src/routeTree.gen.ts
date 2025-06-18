@@ -20,6 +20,7 @@ import { ServerRoute as ApiAnimalsServerRouteImport } from './routes/api/animals
 import { ServerRoute as ApiUsersUserIdServerRouteImport } from './routes/api/users.$userId'
 import { ServerRoute as ApiPetsPetIdServerRouteImport } from './routes/api/pets/$petId'
 import { ServerRoute as ApiPetsPetIdVaccineServerRouteImport } from './routes/api/pets/$petId.vaccine'
+import { ServerRoute as ApiPetsPetIdAllergyServerRouteImport } from './routes/api/pets/$petId.allergy'
 
 const rootServerRouteImport = createServerRootRoute()
 
@@ -69,6 +70,12 @@ const ApiPetsPetIdVaccineServerRoute =
     path: '/vaccine',
     getParentRoute: () => ApiPetsPetIdServerRoute,
   } as any)
+const ApiPetsPetIdAllergyServerRoute =
+  ApiPetsPetIdAllergyServerRouteImport.update({
+    id: '/allergy',
+    path: '/allergy',
+    getParentRoute: () => ApiPetsPetIdServerRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -105,6 +112,7 @@ export interface FileServerRoutesByFullPath {
   '/api/users': typeof ApiUsersServerRouteWithChildren
   '/api/pets/$petId': typeof ApiPetsPetIdServerRouteWithChildren
   '/api/users/$userId': typeof ApiUsersUserIdServerRoute
+  '/api/pets/$petId/allergy': typeof ApiPetsPetIdAllergyServerRoute
   '/api/pets/$petId/vaccine': typeof ApiPetsPetIdVaccineServerRoute
 }
 export interface FileServerRoutesByTo {
@@ -113,6 +121,7 @@ export interface FileServerRoutesByTo {
   '/api/users': typeof ApiUsersServerRouteWithChildren
   '/api/pets/$petId': typeof ApiPetsPetIdServerRouteWithChildren
   '/api/users/$userId': typeof ApiUsersUserIdServerRoute
+  '/api/pets/$petId/allergy': typeof ApiPetsPetIdAllergyServerRoute
   '/api/pets/$petId/vaccine': typeof ApiPetsPetIdVaccineServerRoute
 }
 export interface FileServerRoutesById {
@@ -122,6 +131,7 @@ export interface FileServerRoutesById {
   '/api/users': typeof ApiUsersServerRouteWithChildren
   '/api/pets/$petId': typeof ApiPetsPetIdServerRouteWithChildren
   '/api/users/$userId': typeof ApiUsersUserIdServerRoute
+  '/api/pets/$petId/allergy': typeof ApiPetsPetIdAllergyServerRoute
   '/api/pets/$petId/vaccine': typeof ApiPetsPetIdVaccineServerRoute
 }
 export interface FileServerRouteTypes {
@@ -132,6 +142,7 @@ export interface FileServerRouteTypes {
     | '/api/users'
     | '/api/pets/$petId'
     | '/api/users/$userId'
+    | '/api/pets/$petId/allergy'
     | '/api/pets/$petId/vaccine'
   fileServerRoutesByTo: FileServerRoutesByTo
   to:
@@ -140,6 +151,7 @@ export interface FileServerRouteTypes {
     | '/api/users'
     | '/api/pets/$petId'
     | '/api/users/$userId'
+    | '/api/pets/$petId/allergy'
     | '/api/pets/$petId/vaccine'
   id:
     | '__root__'
@@ -148,6 +160,7 @@ export interface FileServerRouteTypes {
     | '/api/users'
     | '/api/pets/$petId'
     | '/api/users/$userId'
+    | '/api/pets/$petId/allergy'
     | '/api/pets/$petId/vaccine'
   fileServerRoutesById: FileServerRoutesById
 }
@@ -226,14 +239,23 @@ declare module '@tanstack/react-start/server' {
       preLoaderRoute: typeof ApiPetsPetIdVaccineServerRouteImport
       parentRoute: typeof ApiPetsPetIdServerRoute
     }
+    '/api/pets/$petId/allergy': {
+      id: '/api/pets/$petId/allergy'
+      path: '/allergy'
+      fullPath: '/api/pets/$petId/allergy'
+      preLoaderRoute: typeof ApiPetsPetIdAllergyServerRouteImport
+      parentRoute: typeof ApiPetsPetIdServerRoute
+    }
   }
 }
 
 interface ApiPetsPetIdServerRouteChildren {
+  ApiPetsPetIdAllergyServerRoute: typeof ApiPetsPetIdAllergyServerRoute
   ApiPetsPetIdVaccineServerRoute: typeof ApiPetsPetIdVaccineServerRoute
 }
 
 const ApiPetsPetIdServerRouteChildren: ApiPetsPetIdServerRouteChildren = {
+  ApiPetsPetIdAllergyServerRoute: ApiPetsPetIdAllergyServerRoute,
   ApiPetsPetIdVaccineServerRoute: ApiPetsPetIdVaccineServerRoute,
 }
 

@@ -37,7 +37,6 @@ export const ServerRoute = createServerFileRoute(
   "/api/pets/$petId/vaccine"
 ).methods({
   DELETE: async ({ request }) => {
-    console.log("deze");
     const id = new URL(request.url).searchParams.get("id");
 
     // NOTE:
@@ -82,7 +81,7 @@ export const ServerRoute = createServerFileRoute(
       return new Response(null, { status: 204 });
     } catch {
       return new Response(
-        JSON.stringify({ name: { message: "Failed to add your pet." } }),
+        JSON.stringify({ name: { message: "Failed to add a vaccine." } }),
         { status: 400 }
       );
     }

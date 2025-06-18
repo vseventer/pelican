@@ -5,7 +5,14 @@ import {
 } from "@tanstack/react-router";
 
 import { DateTime } from "@/components/DateTime";
-import { DeleteForm, VaccineForm } from "@/components/forms/Vaccine";
+import {
+  DeleteForm as DeleteAllergyForm,
+  AllergyForm,
+} from "@/components/forms/Allergy";
+import {
+  DeleteForm as DeleteVaccineForm,
+  VaccineForm,
+} from "@/components/forms/Vaccine";
 import { H1, H2 } from "@/components/Typography";
 import { useUserId } from "@/components/UserIntercept";
 import type { AllergyRecord, Pet, VaccineRecord } from "@/db/schema";
@@ -25,29 +32,38 @@ export const Route = createFileRoute("/pets/$petId")({
   notFoundComponent: () => "Did your pet escape? We could not find it.",
 });
 
-function Allergy({ data }: { data: AllergyRecord }) {
+function Allergy({ data, petId }: { data: AllergyRecord; petId: Pet["id"] }) {
   return (
-    <p>
-      <strong>{data.name}</strong>
-      {data.reaction ? (
-        <>
-          <br />
-          Reactions: {data.reaction}{" "}
-          {data.severity ? <em>({data.severity})</em> : null}
-        </>
-      ) : null}
-    </p>
+    <div className="flex flex-row gap-2 items-center justify-between">
+      <p>
+        <strong>{data.name}</strong>
+        {data.reaction ? (
+          <>
+            <br />
+            Reactions: {data.reaction}{" "}
+            {data.severity ? <em>({data.severity})</em> : null}
+          </>
+        ) : null}
+      </p>
+      <DeleteAllergyForm allergy={data} petId={petId} />
+    </div>
   );
 }
 
-function Allergies({ data }: { data: Pet["allergies"] }) {
+function Allergies({
+  data,
+  petId,
+}: {
+  data: Pet["allergies"];
+  petId: Pet["id"];
+}) {
   const userId = useUserId();
   const inner =
     data.length > 0 ? (
       <ul>
         {data.map((allergy) => (
           <li className="border-b space-y-2 py-2" key={allergy.id}>
-            <Allergy data={allergy} />
+            <Allergy data={allergy} petId={petId} />
             {allergy.deletedAt ? (
               <span className="bg-red-300 italic p-1 text-sm">
                 This record was deleted on <DateTime time={allergy.deletedAt} />
@@ -65,7 +81,7 @@ function Allergies({ data }: { data: Pet["allergies"] }) {
     <>
       <H2>Allergies</H2>
       {inner}
-      {userId === USER_ADMIN ? null : <button>Add Allergy</button>}
+      {userId === USER_ADMIN ? null : <AllergyForm petId={petId} />}
     </>
   );
 }
@@ -81,7 +97,7 @@ function Vaccine({ data, petId }: { data: VaccineRecord; petId: Pet["id"] }) {
         <br />
         {data.name}
       </p>
-      <DeleteForm petId={petId} vaccine={data} />
+      <DeleteVaccineForm petId={petId} vaccine={data} />
     </div>
   );
 }
@@ -149,7 +165,7 @@ function RouteComponent() {
         <dd>{data.animal}</dd>
       </dl>
       <hr />
-      <Allergies data={data.allergies} />
+      <Allergies data={data.allergies} petId={data.id} />
       <hr />
       <Vaccines data={data.vaccines} petId={data.id} />
     </div>
