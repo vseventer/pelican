@@ -18,7 +18,8 @@ import { ServerRoute as ApiUsersServerRouteImport } from './routes/api/users'
 import { ServerRoute as ApiPetsServerRouteImport } from './routes/api/pets'
 import { ServerRoute as ApiAnimalsServerRouteImport } from './routes/api/animals'
 import { ServerRoute as ApiUsersUserIdServerRouteImport } from './routes/api/users.$userId'
-import { ServerRoute as ApiPetsPetIdServerRouteImport } from './routes/api/pets.$petId'
+import { ServerRoute as ApiPetsPetIdServerRouteImport } from './routes/api/pets/$petId'
+import { ServerRoute as ApiPetsPetIdVaccineServerRouteImport } from './routes/api/pets/$petId.vaccine'
 
 const rootServerRouteImport = createServerRootRoute()
 
@@ -62,6 +63,12 @@ const ApiPetsPetIdServerRoute = ApiPetsPetIdServerRouteImport.update({
   path: '/$petId',
   getParentRoute: () => ApiPetsServerRoute,
 } as any)
+const ApiPetsPetIdVaccineServerRoute =
+  ApiPetsPetIdVaccineServerRouteImport.update({
+    id: '/vaccine',
+    path: '/vaccine',
+    getParentRoute: () => ApiPetsPetIdServerRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -96,23 +103,26 @@ export interface FileServerRoutesByFullPath {
   '/api/animals': typeof ApiAnimalsServerRoute
   '/api/pets': typeof ApiPetsServerRouteWithChildren
   '/api/users': typeof ApiUsersServerRouteWithChildren
-  '/api/pets/$petId': typeof ApiPetsPetIdServerRoute
+  '/api/pets/$petId': typeof ApiPetsPetIdServerRouteWithChildren
   '/api/users/$userId': typeof ApiUsersUserIdServerRoute
+  '/api/pets/$petId/vaccine': typeof ApiPetsPetIdVaccineServerRoute
 }
 export interface FileServerRoutesByTo {
   '/api/animals': typeof ApiAnimalsServerRoute
   '/api/pets': typeof ApiPetsServerRouteWithChildren
   '/api/users': typeof ApiUsersServerRouteWithChildren
-  '/api/pets/$petId': typeof ApiPetsPetIdServerRoute
+  '/api/pets/$petId': typeof ApiPetsPetIdServerRouteWithChildren
   '/api/users/$userId': typeof ApiUsersUserIdServerRoute
+  '/api/pets/$petId/vaccine': typeof ApiPetsPetIdVaccineServerRoute
 }
 export interface FileServerRoutesById {
   __root__: typeof rootServerRouteImport
   '/api/animals': typeof ApiAnimalsServerRoute
   '/api/pets': typeof ApiPetsServerRouteWithChildren
   '/api/users': typeof ApiUsersServerRouteWithChildren
-  '/api/pets/$petId': typeof ApiPetsPetIdServerRoute
+  '/api/pets/$petId': typeof ApiPetsPetIdServerRouteWithChildren
   '/api/users/$userId': typeof ApiUsersUserIdServerRoute
+  '/api/pets/$petId/vaccine': typeof ApiPetsPetIdVaccineServerRoute
 }
 export interface FileServerRouteTypes {
   fileServerRoutesByFullPath: FileServerRoutesByFullPath
@@ -122,6 +132,7 @@ export interface FileServerRouteTypes {
     | '/api/users'
     | '/api/pets/$petId'
     | '/api/users/$userId'
+    | '/api/pets/$petId/vaccine'
   fileServerRoutesByTo: FileServerRoutesByTo
   to:
     | '/api/animals'
@@ -129,6 +140,7 @@ export interface FileServerRouteTypes {
     | '/api/users'
     | '/api/pets/$petId'
     | '/api/users/$userId'
+    | '/api/pets/$petId/vaccine'
   id:
     | '__root__'
     | '/api/animals'
@@ -136,6 +148,7 @@ export interface FileServerRouteTypes {
     | '/api/users'
     | '/api/pets/$petId'
     | '/api/users/$userId'
+    | '/api/pets/$petId/vaccine'
   fileServerRoutesById: FileServerRoutesById
 }
 export interface RootServerRouteChildren {
@@ -206,15 +219,33 @@ declare module '@tanstack/react-start/server' {
       preLoaderRoute: typeof ApiPetsPetIdServerRouteImport
       parentRoute: typeof ApiPetsServerRoute
     }
+    '/api/pets/$petId/vaccine': {
+      id: '/api/pets/$petId/vaccine'
+      path: '/vaccine'
+      fullPath: '/api/pets/$petId/vaccine'
+      preLoaderRoute: typeof ApiPetsPetIdVaccineServerRouteImport
+      parentRoute: typeof ApiPetsPetIdServerRoute
+    }
   }
 }
 
+interface ApiPetsPetIdServerRouteChildren {
+  ApiPetsPetIdVaccineServerRoute: typeof ApiPetsPetIdVaccineServerRoute
+}
+
+const ApiPetsPetIdServerRouteChildren: ApiPetsPetIdServerRouteChildren = {
+  ApiPetsPetIdVaccineServerRoute: ApiPetsPetIdVaccineServerRoute,
+}
+
+const ApiPetsPetIdServerRouteWithChildren =
+  ApiPetsPetIdServerRoute._addFileChildren(ApiPetsPetIdServerRouteChildren)
+
 interface ApiPetsServerRouteChildren {
-  ApiPetsPetIdServerRoute: typeof ApiPetsPetIdServerRoute
+  ApiPetsPetIdServerRoute: typeof ApiPetsPetIdServerRouteWithChildren
 }
 
 const ApiPetsServerRouteChildren: ApiPetsServerRouteChildren = {
-  ApiPetsPetIdServerRoute: ApiPetsPetIdServerRoute,
+  ApiPetsPetIdServerRoute: ApiPetsPetIdServerRouteWithChildren,
 }
 
 const ApiPetsServerRouteWithChildren = ApiPetsServerRoute._addFileChildren(

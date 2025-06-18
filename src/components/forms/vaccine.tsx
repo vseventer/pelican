@@ -1,7 +1,7 @@
 import { Form, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useLoaderData } from "@tanstack/react-router";
+import { useLoaderData, useRouter } from "@tanstack/react-router";
 
 import { useUserId } from "@/components/UserIntercept";
 import { Pet } from "@/db/schema";
@@ -20,6 +20,7 @@ export const vaccineSchema = z
 type VaccineSchema = z.infer<typeof vaccineSchema>;
 
 export function VaccineForm({ petId }: { petId: Pet["id"] }) {
+  const router = useRouter();
   const { availableVaccines } = useLoaderData({ from: "/pets/$petId" });
   const userId = useUserId();
 
@@ -27,6 +28,7 @@ export function VaccineForm({ petId }: { petId: Pet["id"] }) {
     control,
     formState: { errors, isSubmitting },
     register,
+    reset,
     setError,
   } = useForm<VaccineSchema>({
     defaultValues: { name: "", dateOfAdministration: "" },
@@ -38,6 +40,10 @@ export function VaccineForm({ petId }: { petId: Pet["id"] }) {
       action={`/api/pets/${petId}/vaccine?user=${userId}`}
       className="space-y-2"
       control={control}
+      onSuccess={() => {
+        reset();
+        router.invalidate();
+      }}
       onError={async ({ response }) => {
         const errors = await response.json();
         setError("name", errors.name);

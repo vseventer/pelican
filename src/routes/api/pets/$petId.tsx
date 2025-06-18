@@ -22,6 +22,7 @@ export const ServerRoute = createServerFileRoute("/api/pets/$petId").methods({
 
     const data = await db
       .select({
+        id: pets.id,
         name: pets.name,
         dateOfBirth: pets.dateOfBirth,
         owner: users.name,

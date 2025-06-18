@@ -72,6 +72,7 @@ export const animalVaccines = sqliteTable("animal_vaccines", {
     .references(() => vaccines.id),
   ...metadata,
 });
+export type AnimalVaccine = InferSelectModel<typeof animalVaccines>;
 
 // Allergy records.
 export const allergyRecords = sqliteTable("allergy_records", {
@@ -111,4 +112,5 @@ export type Pet = InferSelectModel<typeof pets> & {
   animal: Animal["name"];
   allergies: AllergyRecord[];
   vaccines: VaccineRecord[];
+  availableVaccines: Vaccine[];
 };
