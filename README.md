@@ -1,6 +1,6 @@
 # Pelican
 
-> A MVP-app for tracking your pet's medical records.
+> An MVP-app for tracking your pet's medical records.
 
 ## Getting Started
 
@@ -38,7 +38,7 @@ The basic app scaffolding and running took under 30 minutes.
 
 - Admin users can:
 
-  - View **soft-deleted records** (e.g., historical allergy or vaccine data that a user marked as removed)
+  - View **soft-deleted records** (e.g., historical allergy or vaccine data that was removed)
   - See full medical history for any pet, even past modifications
 
 - Users and admins can:
@@ -54,25 +54,25 @@ The basic app scaffolding and running took under 30 minutes.
 **Normalization & Modularity**:
 
 - The schema is well-normalized:
-- Animals and vaccines are decoupled, allowing fine-grained control of vaccine schedules per species (animal_vaccines).
+- Animals and vaccines are decoupled, allowing fine-grained control of vaccine schedules per species.
 - Pets link to users and animals, maintaining clear separation between general species-level data and individual pets.
-- Vaccine records link to the animal_vaccines table rather than vaccines directly — enforcing correct pairings and supporting animal-specific schedules.
+- Vaccine records link to the `animal_vaccines` table rather than vaccines directly — enforcing correct pairings and supporting animal-specific schedules.
 
 **Auditability:**
 
-- Every table includes createdAt, and key medical records use a deletedAt timestamp to enable soft-deletion.
+- Every table includes `createdAt`, and key medical records use a `deletedAt` timestamp to enable soft-deletion.
 - This makes it possible to audit the full historical medical trail of any pet, even if records are “removed” from the user’s perspective.
 
 **Extensibility:**
 
-- By modeling vaccine applicability with the animal_vaccines join table, the schema supports future logic like showing overdue vaccinations based on species.
+- By modeling vaccine applicability with the `animal_vaccines` join table, the schema supports future logic like showing overdue vaccinations based on species.
 - You could easily extend this to support vaccine frequency or schedule data (e.g., interval_days).
 
 **Data Integrity:**
 
-- All foreign keys are explicitly enforced (references(() => ...)).
-
+- All foreign keys are explicitly enforced.
 - Unique constraints on names (e.g., animals, allergies, vaccines) help reduce redundancy even when user-created entries are allowed.
+- More constraints can be added - see section on improvements.
 
 **UX Considerations:**
 
@@ -82,7 +82,7 @@ The basic app scaffolding and running took under 30 minutes.
 >
 > - All history is traceable. Nothing is permanently deleted.
 > - The GitHub repo includes a pre-built SQLite file with basic sample data.
-> - The `db/` folder contains the seed script.
+> - The `db/` folder contains the seed script. There's also `npm run seed` if you want to re-create your local database (does require some dependencies on your machine).
 
 ## Front-End
 
