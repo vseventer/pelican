@@ -86,7 +86,7 @@ The basic app scaffolding and running took under 30 minutes.
 
 ## Front-End
 
-The main pages include:
+The UI consists of header (medical card with company name), sidebar, main section, and footer. On smaller viewports, the sidebar and main content are stacked instead. The pages include:
 
 - **Landing Page** (unauthenticated):
 
