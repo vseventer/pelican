@@ -50,6 +50,10 @@ const [animalVaccineData, petData] = await Promise.all([
         animalId: animalData[0].id, // Cat.
         vaccineId: vaccineData[1].id, // Rabies.
       },
+      {
+        animalId: animalData[1].id, // Dog.
+        vaccineId: vaccineData[1].id, // Rabies.
+      },
     ])
     .returning({ id: animalVaccines.id }),
   db

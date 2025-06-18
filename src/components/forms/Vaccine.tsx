@@ -14,7 +14,7 @@ export const vaccineSchema = z
     dateOfAdministration: z.string().min(1, { message: "Please enter a date" }),
   })
   .refine((data) => !(data.vaccine === 0 && data.name.length === 0), {
-    message: "Vaccine need to be specified.",
+    message: "Vaccine needs to be specified.",
     path: ["name"],
   });
 type VaccineSchema = z.infer<typeof vaccineSchema>;

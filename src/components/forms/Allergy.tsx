@@ -15,7 +15,7 @@ export const allergySchema = z
     severity: z.enum(["mild", "severe"]),
   })
   .refine((data) => !(data.allergy === 0 && data.name.length === 0), {
-    message: "Allergy need to be specified.",
+    message: "Allergy needs to be specified.",
     path: ["name"],
   });
 type AllergySchema = z.infer<typeof allergySchema>;

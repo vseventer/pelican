@@ -14,7 +14,7 @@ export const petSchema = z
     customAnimal: z.string(),
   })
   .refine((data) => !(data.animal === 0 && data.customAnimal.length === 0), {
-    message: "Species need to be specified.",
+    message: "Species needs to be specified.",
     path: ["animal"],
   });
 type PetSchema = z.infer<typeof petSchema>;
