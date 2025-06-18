@@ -128,7 +128,7 @@ a:any-link {
 }
 
 button {
-  @apply bg-gray-200 border border-gray-400 p-2 shadow text-sm;
+  @apply bg-gray-200 border border-gray-400 p-2 shadow text-sm disabled:opacity-50;
 }
 
 dt {
