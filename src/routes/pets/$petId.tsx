@@ -9,13 +9,14 @@ import {
   DeleteForm as DeleteAllergyForm,
   AllergyForm,
 } from "@/components/forms/Allergy";
+import { LabForm } from "@/components/forms/Lab";
 import {
   DeleteForm as DeleteVaccineForm,
   VaccineForm,
 } from "@/components/forms/Vaccine";
 import { H1, H2 } from "@/components/Typography";
 import { useUserId } from "@/components/UserIntercept";
-import type { AllergyRecord, Pet, VaccineRecord } from "@/db/schema";
+import type { AllergyRecord, LabRecord, Pet, VaccineRecord } from "@/db/schema";
 import { fetchPet } from "@/lib/hooks";
 import { USER_ADMIN } from "@/lib/constants";
 
@@ -82,6 +83,48 @@ function Allergies({
       <H2>Allergies</H2>
       {inner}
       {userId === USER_ADMIN ? null : <AllergyForm petId={petId} />}
+    </>
+  );
+}
+
+function Lab({ data }: { data: LabRecord }) {
+  return (
+    <div>
+      <strong>{data.name}</strong>
+      <dl>
+        <dt className="text-sm">Category</dt>
+        <dd>{data.category}</dd>
+        <dt className="text-sm">Value</dt>
+        <dd>
+          {data.value}
+          {data.unit ?? ""}
+        </dd>
+      </dl>
+    </div>
+  );
+}
+
+function Labs({ data, petId }: { data: LabRecord[]; petId: Pet["id"] }) {
+  const userId = useUserId();
+  const inner =
+    data.length > 0 ? (
+      <ul className="space-y-2">
+        {data.map((lab) => (
+          <li className="border-b space-y-2 py-2" key={lab.id}>
+            <Lab data={lab} />
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p>
+        <em>None</em>
+      </p>
+    );
+  return (
+    <>
+      <H2>Lab Records</H2>
+      {inner}
+      {userId === USER_ADMIN ? null : <LabForm petId={petId} />}
     </>
   );
 }
@@ -166,6 +209,8 @@ function RouteComponent() {
       </dl>
       <hr />
       <Allergies data={data.allergies} petId={data.id} />
+      <hr />
+      <Labs data={data.labs} petId={data.id} />
       <hr />
       <Vaccines data={data.vaccines} petId={data.id} />
     </div>

@@ -107,6 +107,19 @@ export type VaccineRecord = InferSelectModel<typeof vaccineRecords> & {
   name: Vaccine["name"];
 };
 
+// Lab.
+export const labRecords = sqliteTable("labs", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  petId: integer("pet_id")
+    .notNull()
+    .references(() => pets.id),
+  name: text("name").notNull(),
+  category: text("category").notNull(),
+  value: text("value").notNull(),
+  unit: text("unit"),
+});
+export type LabRecord = InferSelectModel<typeof labRecords>;
+
 export type Pet = InferSelectModel<typeof pets> & {
   owner: User["name"];
   animal: Animal["name"];

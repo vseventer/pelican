@@ -7,6 +7,7 @@ import {
   allergyRecords,
   animals,
   animalVaccines,
+  labRecords,
   pets,
   users,
   vaccineRecords,
@@ -43,7 +44,7 @@ export const ServerRoute = createServerFileRoute("/api/pets/$petId").methods({
     if (data.length > 0) {
       const pet = data[0];
 
-      // Merge with allergies, vaccines.
+      // Merge with allergies, vaccines, labs.
       const promises = [
         db
           .select({
@@ -88,17 +89,24 @@ export const ServerRoute = createServerFileRoute("/api/pets/$petId").methods({
           .innerJoin(animalVaccines, eq(vaccines.id, animalVaccines.vaccineId))
           .where(eq(animalVaccines.animalId, pet.animalId))
           .orderBy(sql`lower(${vaccines.name})`),
+        db
+          .select()
+          .from(labRecords)
+          .where(eq(labRecords.petId, petId))
+          .orderBy(sql`lower(${labRecords.name})`),
       ];
       const [
         allergyData,
         vaccineHistory,
         availableAllergies,
         availableVaccines,
+        labs,
       ] = await Promise.all(promises);
 
       return json({
         ...pet,
         allergies: allergyData,
+        labs,
         vaccines: vaccineHistory,
         availableAllergies,
         availableVaccines,

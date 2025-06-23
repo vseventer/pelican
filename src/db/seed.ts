@@ -5,6 +5,7 @@ import {
   allergyRecords,
   animals,
   animalVaccines,
+  labRecords,
   pets,
   users,
   vaccineRecords,
@@ -114,6 +115,15 @@ await Promise.all([
       petId: petData[0].id,
       vaccineId: animalVaccineData[1].id,
       dateOfAdministration: new Date(2025, 3, 22),
+    },
+  ]),
+  db.insert(labRecords).values([
+    {
+      petId: petData[0].id,
+      name: "Screening",
+      category: "image",
+      value: "10",
+      unit: "mg",
     },
   ]),
 ]);
